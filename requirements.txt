@@ -1,0 +1,63 @@
+# Dynamic Privacy Shield - Python dependencies
+# Tested on Python 3.10 / 3.11 - Windows, Linux, macOS (Intel & Apple Silicon)
+#
+# This project uses only OpenCV's built-in DNN models (YuNet for detection,
+# SFace for recognition). It does NOT require dlib or face_recognition -
+# this avoids the most common cross-platform installation failure (dlib
+# needs a C++ compiler / cmake to build).
+#
+# PER-OS INSTALLATION NOTES:
+#
+# Windows:
+#   No extra steps needed - all packages below have prebuilt wheels.
+#   If pip fails with UnicodeDecodeError while reading this file, run:
+#     set PYTHONUTF8=1   (cmd)   or   $env:PYTHONUTF8=1   (PowerShell)
+#     export PYTHONUTF8=1        (Git Bash)
+#   before pip install. This forces Python to read files as UTF-8 instead
+#   of the OS locale codepage (e.g. cp1253 on Greek Windows).
+#
+# Linux (Ubuntu/Debian):
+#   PyQt6 needs a few system libraries:
+#     sudo apt install libxcb-xinerama0 libxcb-cursor0 libxkbcommon-x11-0 libgl1
+#
+# macOS (Intel or Apple Silicon):
+#   No extra system dependency. On Apple Silicon, use a native arm64
+#   Python build (not Rosetta/x86_64) for best performance.
+#
+# IMPORTANT: mediapipe is pinned to an EXACT version (0.10.21), not a
+# minimum. Google removed the legacy `mp.solutions` API (used by
+# gaze_tracker.py) from mediapipe releases newer than this. Do NOT
+# change this to ">=" or let it float to the latest version.
+
+opencv-python>=4.8.0,<5.0.0
+mediapipe==0.10.21
+numpy>=1.24.0,<2.0.0
+PyQt6>=6.5.0
+openpyxl>=3.1.0
+
+# ---------------------------------------------------------------------------
+# OPTIONAL - only needed for --gaze-backend tobii (Tobii Pro SDK / Spectrum),
+# ή για το γραφικό παράθυρο επιλογής backend να εμφανίζει ενεργή την
+# επιλογή "Tobii Pro SDK" (BackendSelectDialog).
+#
+# IMPORTANT: the tobii-research SDK requires Python 3.10 (no official
+# wheels for 3.11+ at time of writing). Το venv που τρέχει το main.py
+# πρέπει να έχει PyQt6 + mediapipe + tobii-research ΟΛΑ στον ίδιο
+# interpreter, ώστε το CameraThread και το TobiiGazeTracker να τρέχουν
+# μαζί ως μία διεργασία.
+#
+# Setup (Git Bash on Windows):
+#   py -3.10 -m venv venv-full
+#   source venv-full/Scripts/activate
+#   export PYTHONUTF8=1
+#   pip install -r requirements.txt
+#   pip install tobii-research
+#
+# tobii-research>=1.10.1
+# ---------------------------------------------------------------------------
+#
+# NOTE: το backend 'tobii4c' (Tobii 4C μέσω custom C++ Stream Engine
+# bridge, tobii_gaze_bridge.exe) ΔΕΝ χρειάζεται το πακέτο tobii-research —
+# επικοινωνεί με τη συσκευή μέσω ξεχωριστού compiled .exe (subprocess),
+# όχι μέσω Python SDK. Δες BUILDING_EXE.md / tobii_bridge/ για το build
+# του C++ κομματιού.

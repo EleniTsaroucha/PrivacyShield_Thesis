@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+
+# PyInstaller build output (the .spec file is kept)
+build/
+dist/
+
+# Experiment data - personal data of participants
+experiment_logs/
+
+# Enrolled users - biometric data
+trusted_thumbnails/
+*.npz
+
+# User-specific gaze calibration
+gaze_calibration.json
+
+# Compiled binaries and libraries (Tobii SDK, bridge)
+*.exe
+*.dll
+*.lib
+*.obj
+*.pdb
+
+# IDE / OS
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
