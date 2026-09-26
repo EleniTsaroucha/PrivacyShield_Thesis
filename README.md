@@ -44,18 +44,24 @@ The system is built from three components:
 ## Requirements
 
 - Windows (the system was developed and tested on Windows).
-- Python [TODO: version]. Check compatibility with `tobii-research` before choosing a version.
+- Python. Check compatibility with `tobii-research` before choosing a version.
 - A webcam. Face detection relies on the camera feed regardless of the selected gaze backend.
 - Optional: Tobii Eye Tracker 4C and/or Tobii Pro Spectrum.
 
 ## Installation
 
 ```powershell
-git clone https://github.com/[TODO: username]/[TODO: repository].git
-cd [TODO: repository]
+git clone https://github.com/EleniTsaroucha/PrivacyShield_Thesis.git
+cd [path]
 python -m venv venv
 .\venv\Scripts\Activate.ps1
 pip install -r requirements.txt
+$env:PYTHONUTF8=1
+python -c "import PyQt6.QtCore, mediapipe, cv2; print('ok')"
+python -c "import tobii_research; print(tobii_research.__version__)"
+python -c "import tobii_research as tr; print(tr.find_all_eyetrackers())"
+python -m pip install tobii-research
+python -c "import tobii_research as tr; print(tr.__version__); print(tr.find_all_eyetrackers())"
 ```
 
 ### Face models
@@ -73,7 +79,7 @@ The bridge links against the Tobii Stream Engine SDK. The SDK is distributed by 
 
 1. Install the Tobii 4C runtime software and make sure the tracker is working.
 2. Obtain Tobii Stream Engine SDK v2.2.2.363 from Tobii.
-3. Build the bridge from the sources in `tobii_bridge/`: [TODO: build steps: compiler/IDE, include and library paths].
+3. Build the bridge from the sources in `tobii_bridge/`.
 4. By default, `main.py` expects the executable at `tobii_bridge/build/Release/tobii_gaze_bridge.exe`. A different path can be given as a command-line option (see `python main.py --help`). The SDK runtime DLL must be available to the executable at runtime (e.g., in the same directory).
 
 The bridge targets the older Stream Engine API, in which `tobii_device_create` takes three parameters. Newer SDK versions require changes to the bridge source.
@@ -94,16 +100,9 @@ python main.py
 2. Enroll your face. Enrollment data are stored locally (`trusted_faces.npz`, `trusted_thumbnails/`).
 3. Complete the gaze calibration.
 4. The foveated overlay starts, and the application keeps running from the system tray.
+5. To stop the programma, click on the X icon.
 
-[TODO: how to stop the application; keyboard shortcuts, if any.]
 
-## Building a standalone executable
-
-```powershell
-pyinstaller [TODO: name].spec
-```
-
-Use the `.spec` file included in the repository. MediaPipe loads `.tflite` and `.binarypb` data files at runtime, and PyInstaller does not collect them automatically. The spec file gathers them with `os.walk()`, so a build without it will fail at runtime.
 
 ## Data and privacy
 
